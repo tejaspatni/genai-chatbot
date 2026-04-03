@@ -1,8 +1,14 @@
 import ollama
 
-print("🤖 Chatbot with memory started! Type 'exit' to quit.\n")
+print("🤖 Smart Chatbot started! Type 'exit' to quit.\n")
 
-conversation = []
+# System prompt (VERY IMPORTANT)
+conversation = [
+    {
+        "role": "system",
+        "content": "You are a helpful AI tutor who explains concepts in simple and clear terms. Always give structured answers."
+    }
+]
 
 while True:
     user_input = input("You: ")
@@ -11,7 +17,6 @@ while True:
         print("Chatbot: Goodbye!")
         break
 
-    # Add user message
     conversation.append({"role": "user", "content": user_input})
 
     response = ollama.chat(
@@ -23,5 +28,4 @@ while True:
 
     print("Chatbot:", bot_reply)
 
-    # Add bot response to memory
     conversation.append({"role": "assistant", "content": bot_reply})
