@@ -1,12 +1,20 @@
 import ollama
 
-print("🤖 Smart Chatbot started! Type 'exit' to quit.\n")
+print("🤖 Smart Chatbot (Optimized) started! Type 'exit' to quit.\n")
 
-# System prompt (VERY IMPORTANT)
+MAX_HISTORY = 6
+
 conversation = [
     {
         "role": "system",
-        "content": "You are a helpful AI tutor who explains concepts in simple and clear terms. Always give structured answers."
+        "content": """
+You are an expert AI tutor.
+
+Rules:
+1. Explain simply
+2. Use bullet points
+3. Give examples
+"""
     }
 ]
 
@@ -18,6 +26,10 @@ while True:
         break
 
     conversation.append({"role": "user", "content": user_input})
+
+    # 🧠 Keep only last N messages (IMPORTANT)
+    if len(conversation) > MAX_HISTORY:
+        conversation = [conversation[0]] + conversation[-MAX_HISTORY:]
 
     response = ollama.chat(
         model="llama3",
